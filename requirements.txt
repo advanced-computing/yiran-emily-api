@@ -10,3 +10,5 @@ nbformat
 statsmodels
 
 jupyter-book==1.*
+
+Flask>=2.3
