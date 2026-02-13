@@ -1,2 +1,7 @@
-# yiran-emily-api
-lab 4 homework
+# Yiran-Emily-api
+
+lab 4 project for Advanced Computing.
+
+## Contributors
+- Emily Chu
+- Yiran Ge
