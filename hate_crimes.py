@@ -12,9 +12,7 @@ ID_COL = "full_complaint_id"
 
 
 def normalize_col(name: str) -> str:
-    """
-    Convert column names like 'Full Complaint ID' -> 'full_complaint_id'
-    """
+ 
     name = name.strip().lower()
     name = re.sub(r"[^a-z0-9]+", "_", name)   # non-alnum -> _
     name = re.sub(r"_+", "_", name).strip("_")
@@ -22,10 +20,7 @@ def normalize_col(name: str) -> str:
 
 
 def load_data() -> pd.DataFrame:
-    """
-    Load CSV as strings (important for ID fields).
-    Normalize column names for API friendliness.
-    """
+   
     if not os.path.exists(DATA_FILE):
         raise FileNotFoundError(
             f"CSV not found: {DATA_FILE}. Put the file in data/ and name it NYPD_Hate_Crimes_20260130.csv"
@@ -43,10 +38,7 @@ def load_data() -> pd.DataFrame:
 
 
 def apply_filters(df: pd.DataFrame, filters: dict) -> pd.DataFrame:
-    """
-    Generic filtering: any query param except limit/offset/format becomes a filter.
-    Example: /api/records?county=KINGS
-    """
+  
     for col, val in filters.items():
         if col not in df.columns:
             # Unknown column -> return empty set (or you could return error)
@@ -88,12 +80,7 @@ def home():
 
 @app.get("/api/records")
 def list_records():
-    """
-    List records with:
-    - filter: any column=value (except limit/offset/format)
-    - limit, offset
-    - format: json/csv
-    """
+
     df = load_data()
 
     if ID_COL not in df.columns:
@@ -122,10 +109,7 @@ def list_records():
 
 @app.get(f"/api/records/<record_id>")
 def get_record(record_id):
-    """
-    Retrieve one record by unique ID.
-    Optional: format=json/csv
-    """
+ 
     df = load_data()
 
     if ID_COL not in df.columns:
