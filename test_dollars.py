@@ -1,19 +1,29 @@
 import pandas as pd
+import numpy as np
+import pytest
 
-infile = "HW4.csv"
-outfile = "HW4_1.csv"
+from test_helper import parse_dollars
 
-df = pd.read_csv(infile)
+def test_parse_dollars_basic():
+    amounts = pd.Series(["5", "5.99", "$100", "$100.00"])
+    expected = pd.Series([5.00, 5.99, 100.00, 100.00])
+
+    result = parse_dollars(amounts)
+
+    assert np.allclose(result.to_numpy(), expected.to_numpy())
+    assert result.dtype == float
 
 
-df["fare_str"] = "$" + df["fare"].astype(int).astype(str)
+def test_parse_dollars_commas_and_spaces():
+    amounts = pd.Series([" $1,234.50 ", "$0", "2,000"])
+    expected = pd.Series([1234.50, 0.00, 2000.00])
 
-# ====== 3) 部分数据加空格（例如每 10 行加一次）======
-mask = df.index % 10 == 0
-df.loc[mask, "fare_str"] = " " + df.loc[mask, "fare_str"] + " "
+    result = parse_dollars(amounts)
 
-# ====== 4) 写出 ======
-df.to_csv(outfile, index=False)
+    assert np.allclose(result.to_numpy(), expected.to_numpy())
 
-print("Wrote:", outfile)
-print(df[["fare", "fare_str"]].head(15))
+
+def test_parse_dollars_returns_new_series():
+    amounts = pd.Series(["$1", "$2"])
+    result = parse_dollars(amounts)
+    assert result is not amounts
