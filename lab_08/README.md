@@ -37,7 +37,7 @@ The full version uses `pcpi_vintages.csv`.
 This file contains:
 
 - one date column
-- multiple vintage columns such as `PCPI04M1`, `PCPI04M2`, and `PCPI25M2`
+- multiple vintage columns such as `PCPI04M1`, `PCPI04M2`, and `PCPI04M3`
 
 Each vintage column represents the CPI values available at a particular release date. For any given `pull_date`, the code identifies the latest vintage available up to that date and returns a standardized dataset with only two columns:
 
